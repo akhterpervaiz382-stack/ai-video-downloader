@@ -1,18 +1,19 @@
 {
   "version": 2,
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/download",
-      "destination": "/api/main.py"
+      "src": "api/main.py",
+      "use": "@vercel/python"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "handle": "filesystem"
+      "source": "/api/(.*)",
+      "destination": "api/main.py"
     },
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
