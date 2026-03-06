@@ -42,3 +42,5 @@ async def download_video(url: str = Query(..., description="The video URL")):
         # Vercel logs mein check karne ke liye print karein
         print(f"Error details: {str(e)}")
         return JSONResponse(content={"status": "error", "message": "Server Busy or Link Blocked. Please try a YouTube Short or TikTok link to test."}, status_code=500)
+        # main.py ke bilkul neechay ye add kar dain
+app = app
