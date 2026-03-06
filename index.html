@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Downloader | Download Videos with AI Summary - JarryLabs</title>
-    <meta name="description" content="Free AI Video Downloader. Download YouTube, TikTok, Facebook, and Instagram videos with instant 1-line AI summaries. No watermark, high quality.">
+    <title>AI Video Downloader | Free Online Video Downloader Without Watermark - JarryLabs</title>
+    <meta name="description" content="Download YouTube, TikTok, Facebook, and Instagram videos free without sign up. High-quality video downloader online with 1-line AI summaries.">
     
     <script type="application/ld+json">
     {
@@ -20,116 +20,180 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
     <style>
-        body { background-color: #f8fafc; }
-        .jarry-green { color: #1dbf73; } /* Fiverr/JarryLabs Green */
+        body { background-color: #ffffff; scroll-behavior: smooth; }
+        .jarry-green { color: #1dbf73; }
+        .bg-jarry-green { background-color: #1dbf73; }
         .btn-yt { background-color: #FF0000; }
         .btn-tt { background-color: #000000; }
         .btn-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
         .btn-fb { background-color: #1877F2; }
-        #loading { display: none; }
+        
+        /* Dots Progress Bar */
+        .dot-pulse { display: none; align-items: center; justify-content: center; gap: 8px; margin: 25px 0; }
+        .dot { width: 14px; height: 14px; background: #1dbf73; border-radius: 50%; animation: pulse 1.5s infinite ease-in-out; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.6); opacity: 1; } }
+
+        /* Hover Effects */
+        .faq-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .faq-card:hover { border-color: #1dbf73; transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(29, 191, 115, 0.1); }
+        
+        .lang-card:hover { border-color: #1dbf73; background-color: #f0fff4; }
     </style>
 </head>
 <body class="font-sans antialiased text-gray-900">
 
-    <nav class="bg-white py-4 shadow-sm border-b">
-        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
-            <div class="text-3xl font-extrabold tracking-tighter">
-                JARRY<span class="jarry-green uppercase">LABS</span>
+    <nav class="bg-white py-4 shadow-sm border-b sticky top-0 z-50">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="text-3xl font-extrabold tracking-tighter cursor-pointer">
+                JARRY<span class="jarry-green uppercase font-black">LABS</span>
             </div>
-            <div class="hidden md:flex space-x-4">
-                <span class="text-gray-400 text-sm font-medium">AI Tools Suite 2026</span>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="https://jarrylabs.com" class="text-gray-600 hover:text-green-500 font-bold uppercase text-sm tracking-widest">Main Site</a>
+                <a href="#" class="text-gray-600 hover:text-green-500 font-bold uppercase text-sm tracking-widest">About Us</a>
             </div>
         </div>
     </nav>
 
-    <div class="max-w-4xl mx-auto px-4 py-16 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold mb-4 text-gray-800">AI Video Downloader</h1>
-        <p class="text-lg text-gray-500 mb-10">Instant downloads with 1-line AI summaries. Free, Fast & Secure.</p>
+    <section class="w-full bg-slate-50 py-20 border-b">
+        <div class="container mx-auto px-6 text-center">
+            <h1 class="text-5xl md:text-7xl font-black mb-6 text-gray-800 uppercase tracking-tighter">AI Video Downloader</h1>
+            <p class="text-xl text-gray-500 mb-12 max-w-3xl mx-auto font-medium">Download high-quality videos instantly. No sign-up, no watermark. Powered by Google Gemini AI.</p>
 
-        <div class="bg-white p-2 rounded-2xl shadow-xl border flex flex-col md:flex-row gap-2 mb-8">
-            <input type="text" id="videoUrl" placeholder="Paste video link here..." 
-                   class="flex-1 p-4 rounded-xl focus:outline-none text-lg">
-            <button onclick="getDownload()" class="bg-[#1dbf73] hover:bg-[#19a463] text-white px-10 py-4 rounded-xl font-bold text-lg transition shadow-md">
-                Download Now
-            </button>
+            <div class="max-w-5xl mx-auto bg-white p-3 rounded-3xl shadow-2xl border-2 flex flex-col md:flex-row gap-2 mb-10">
+                <input type="text" id="videoUrl" placeholder="Paste link from YouTube, TikTok, Facebook, Instagram..." 
+                       class="flex-1 p-5 rounded-2xl focus:outline-none text-lg bg-gray-50 font-medium">
+                <button onclick="getDownload()" class="bg-jarry-green hover:bg-[#19a463] text-white px-14 py-5 rounded-2xl font-black text-2xl transition-all shadow-lg active:scale-95 uppercase">
+                    Fetch Video
+                </button>
+            </div>
+
+            <div id="dotLoader" class="dot-pulse">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <span class="ml-3 font-black jarry-green uppercase tracking-widest">AI is Analyzing Content...</span>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <button class="btn-yt text-white px-8 py-2 rounded-full text-xs font-black uppercase shadow-lg hover:scale-105 transition"><i class="fab fa-youtube mr-1"></i> YouTube</button>
+                <button class="btn-tt text-white px-8 py-2 rounded-full text-xs font-black uppercase shadow-lg hover:scale-105 transition"><i class="fab fa-tiktok mr-1"></i> TikTok</button>
+                <button class="btn-fb text-white px-8 py-2 rounded-full text-xs font-black uppercase shadow-lg hover:scale-105 transition"><i class="fab fa-facebook mr-1"></i> Facebook</button>
+                <button class="btn-ig text-white px-8 py-2 rounded-full text-xs font-black uppercase shadow-lg hover:scale-105 transition"><i class="fab fa-instagram mr-1"></i> Instagram</button>
+            </div>
         </div>
+    </section>
 
-        <div class="flex flex-wrap justify-center gap-3 mb-12">
-            <button class="btn-yt text-white px-4 py-2 rounded-full text-xs font-bold uppercase"><i class="fab fa-youtube mr-1"></i> YouTube</button>
-            <button class="btn-tt text-white px-4 py-2 rounded-full text-xs font-bold uppercase"><i class="fab fa-tiktok mr-1"></i> TikTok</button>
-            <button class="btn-ig text-white px-4 py-2 rounded-full text-xs font-bold uppercase"><i class="fab fa-instagram mr-1"></i> Instagram</button>
-            <button class="btn-fb text-white px-4 py-2 rounded-full text-xs font-bold uppercase"><i class="fab fa-facebook mr-1"></i> Facebook</button>
-            <button class="bg-red-500 text-white px-4 py-2 rounded-full text-xs font-bold uppercase"><i class="fab fa-pinterest mr-1"></i> Pinterest</button>
-        </div>
-
-        <div id="loading" class="mb-10 text-gray-500 font-medium">
-            <i class="fas fa-spinner animate-spin jarry-green text-2xl"></i> AI is processing video...
-        </div>
-
-        <div id="result" class="hidden bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 mb-20">
-            <div class="md:flex items-center p-6 text-left gap-8">
-                <img id="thumb" src="" class="w-full md:w-56 rounded-xl shadow">
+    <div id="result" class="hidden container mx-auto px-6 -mt-16 mb-24">
+        <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-green-100">
+            <div class="md:flex items-center p-10 text-left gap-12">
+                <img id="thumb" src="" class="w-full md:w-80 rounded-3xl shadow-xl border">
                 <div class="flex-1">
-                    <h3 id="title" class="text-xl font-bold mb-2">Video Title</h3>
-                    <div class="bg-gray-50 p-4 rounded-xl border-l-4 border-[#1dbf73] mb-4">
-                        <p class="text-xs font-bold jarry-green uppercase mb-1">AI 1-Line Summary</p>
-                        <p id="aiSummary" class="text-gray-600 italic">Processing...</p>
+                    <h3 id="title" class="text-3xl font-black mb-6 uppercase leading-tight">Video Title</h3>
+                    <div class="bg-green-50 p-8 rounded-3xl border-l-[12px] border-jarry-green mb-8 shadow-inner">
+                        <p class="text-sm font-black jarry-green uppercase mb-3 tracking-widest"><i class="fas fa-robot"></i> AI Summary Insight</p>
+                        <p id="aiSummary" class="text-gray-800 leading-relaxed font-bold italic text-xl">Processing summary...</p>
                     </div>
-                    <a id="downloadBtn" href="#" target="_blank" class="inline-block bg-[#1dbf73] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#19a463] transition">
-                        Save Video (MP4)
+                    <a id="downloadBtn" href="#" target="_blank" class="w-full md:w-auto text-center inline-block bg-jarry-green text-white px-16 py-5 rounded-2xl font-black text-2xl hover:bg-[#19a463] transition shadow-2xl uppercase">
+                        <i class="fas fa-download mr-2"></i> Download MP4
                     </a>
                 </div>
             </div>
         </div>
-
-        <hr class="border-gray-200 mb-20">
-
-        <div class="text-left space-y-12">
-            <section>
-                <h2 class="text-2xl font-bold mb-4">Best AI Video Downloader for Content Creators</h2>
-                <p class="text-gray-600 leading-relaxed">Download high-quality videos using our <strong>free online video downloader</strong>. Whether you need a <strong>TikTok video downloader without watermark</strong> or a fast <strong>Instagram reels downloader</strong>, JarryLabs provides an AI-powered solution that also generates a 1-line summary automatically.</p>
-            </section>
-
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-2xl border shadow-sm">
-                    <h3 class="font-bold text-lg mb-2"><i class="fas fa-check-circle jarry-green mr-2"></i> YouTube Video Downloader</h3>
-                    <p class="text-sm text-gray-500">Easily save 4K and HD videos from YouTube using our <strong>YouTube video downloader</strong> extension style tool.</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl border shadow-sm">
-                    <h3 class="font-bold text-lg mb-2"><i class="fas fa-check-circle jarry-green mr-2"></i> Pinterest Video Downloader</h3>
-                    <p class="text-sm text-gray-500">The most reliable <strong>Pinterest video downloader</strong> for high-res images and videos.</p>
-                </div>
-            </div>
-
-            <section>
-                <h2 class="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
-                <div class="space-y-4">
-                    <details class="bg-white p-4 rounded-xl border group cursor-pointer">
-                        <summary class="font-semibold text-gray-800">Is this video downloader free to use?</summary>
-                        <p class="mt-2 text-gray-600 text-sm">Yes, JarryLabs provides a 100% <strong>free video downloader</strong> for all platforms including Facebook and Instagram.</p>
-                    </details>
-                    <details class="bg-white p-4 rounded-xl border group cursor-pointer">
-                        <summary class="font-semibold text-gray-800">How does the AI summary work?</summary>
-                        <p class="mt-2 text-gray-600 text-sm">Our AI analyzes the video content and metadata to provide you a concise 1-line summary before you even download it.</p>
-                    </details>
-                </div>
-            </section>
-        </div>
     </div>
 
-    <footer class="bg-white py-12 border-t text-center">
-        <p class="text-gray-400 text-sm">© 2026 JarryLabs. All rights reserved. <br> Powered by Gemini AI</p>
+    <section class="container mx-auto px-6 py-20">
+        <div class="grid md:grid-cols-3 gap-10 text-center">
+            <div class="p-10 rounded-[40px] bg-white border-2 faq-card">
+                <h4 class="text-5xl font-black jarry-green mb-3 tracking-tighter">100K+</h4>
+                <p class="font-black text-gray-500 uppercase tracking-widest text-sm">Videos Downloaded</p>
+            </div>
+            <div class="p-10 rounded-[40px] bg-white border-2 faq-card">
+                <h4 class="text-5xl font-black jarry-green mb-3 tracking-tighter">4.9/5</h4>
+                <p class="font-black text-gray-500 uppercase tracking-widest text-sm">Global Rating</p>
+            </div>
+            <div class="p-10 rounded-[40px] bg-white border-2 faq-card">
+                <h4 class="text-5xl font-black jarry-green mb-3 tracking-tighter">FAST</h4>
+                <p class="font-black text-gray-500 uppercase tracking-widest text-sm">Server Speed</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-6 py-20 bg-slate-50 rounded-[50px]">
+        <h2 class="text-4xl font-black text-center mb-16 uppercase tracking-tight">Everything You Need To Know</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
+                <h3 class="font-black text-lg mb-3 uppercase jarry-green">Video Downloader FREE?</h3>
+                <p class="text-gray-600 font-medium">JarryLabs is 100% free forever. We believe in providing premium AI tools without any subscription fees.</p>
+            </div>
+            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
+                <h3 class="font-black text-lg mb-3 uppercase jarry-green">Video Downloader Online?</h3>
+                <p class="text-gray-600 font-medium">Access our tool from any browser. No installation needed for downloading 4K or HD videos online.</p>
+            </div>
+            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
+                <h3 class="font-black text-lg mb-3 uppercase jarry-green">No Watermark?</h3>
+                <p class="text-gray-600 font-medium">Our TikTok and Instagram downloader ensures you get the clean, original video without any watermarks.</p>
+            </div>
+            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
+                <h3 class="font-black text-lg mb-3 uppercase jarry-green">No Sign Up Required?</h3>
+                <p class="text-gray-600 font-medium">Download any video free without sign up or Gmail. We respect your privacy and save your time.</p>
+            </div>
+            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
+                <h3 class="font-black text-lg mb-3 uppercase jarry-green">AI Summary Feature?</h3>
+                <p class="text-gray-600 font-medium">Unique 1-line AI summary powered by Gemini so you know the video content before downloading.</p>
+            </div>
+            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
+                <h3 class="font-black text-lg mb-3 uppercase jarry-green">All Platforms?</h3>
+                <p class="text-gray-600 font-medium">Supports YouTube, Facebook, Twitter, Pinterest, and 1800+ other major streaming sites.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container mx-auto px-6 py-24 text-center">
+        <div class="max-w-4xl mx-auto bg-white border-4 border-dashed rounded-[40px] p-12">
+            <h2 class="text-3xl font-black mb-4 uppercase tracking-tight">Global Language Support</h2>
+            <p class="text-gray-500 font-bold mb-8">This tool works in every language. Choose your preferred interface language:</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">English</button>
+                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">Urdu / Hindi</button>
+                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">Spanish</button>
+                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">Arabic</button>
+                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">French</button>
+            </div>
+        </div>
+    </section>
+
+    <div class="text-center py-10">
+        <a href="https://jarrylabs.com" class="inline-flex items-center px-12 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full transition shadow-xl uppercase tracking-widest">
+            <i class="fas fa-arrow-left mr-3"></i> Back to JarryLabs Home
+        </a>
+    </div>
+
+    <footer class="bg-white py-16 border-t mt-20">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
+            <div class="text-3xl font-black tracking-tighter text-gray-300">
+                JARRY<span class="uppercase">LABS</span>
+            </div>
+            <div class="flex flex-wrap justify-center gap-10 text-sm font-black text-gray-500 uppercase tracking-widest">
+                <a href="#" class="hover:text-green-500">Privacy Policy</a>
+                <a href="#" class="hover:text-green-500">Terms of Service</a>
+                <a href="#" class="hover:text-green-500">Cookie Policy</a>
+                <a href="#" class="hover:text-green-500">DMCA</a>
+            </div>
+            <p class="text-gray-400 text-xs font-bold uppercase">© 2026 JarryLabs. All Rights Reserved.</p>
+        </div>
     </footer>
 
     <script>
         async function getDownload() {
             const url = document.getElementById('videoUrl').value;
             const resultDiv = document.getElementById('result');
-            const loader = document.getElementById('loading');
+            const dotLoader = document.getElementById('dotLoader');
             
             if(!url) return alert("Please paste a valid video link!");
 
-            loader.style.display = 'block';
+            dotLoader.style.display = 'flex';
             resultDiv.classList.add('hidden');
 
             try {
@@ -142,13 +206,14 @@
                     document.getElementById('downloadBtn').href = data.download_link;
                     document.getElementById('aiSummary').innerText = data.summary;
                     resultDiv.classList.remove('hidden');
+                    window.scrollTo({ top: resultDiv.offsetTop - 100, behavior: 'smooth' });
                 } else {
                     alert("Error: " + data.message);
                 }
             } catch (err) {
                 alert("Server Error. Please try again later.");
             } finally {
-                loader.style.display = 'none';
+                dotLoader.style.display = 'none';
             }
         }
     </script>
