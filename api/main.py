@@ -7,7 +7,6 @@ import requests
 app = FastAPI()
 
 def get_ai_summary(title):
-    # Gemini API Key Vercel dashboard se uthayega
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         return f"AI Analysis: High-quality video ready for download."
@@ -36,8 +35,6 @@ async def download_video(url: str = Query(..., description="Video URL")):
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
             video_title = info.get('title', 'Video')
-            
-            # Generating AI Summary
             summary = get_ai_summary(video_title)
 
             return {
@@ -49,6 +46,3 @@ async def download_video(url: str = Query(..., description="Video URL")):
             }
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
-
-# Vercel requirement
-handler = app
