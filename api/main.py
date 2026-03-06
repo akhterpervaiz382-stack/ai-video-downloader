@@ -11,33 +11,34 @@ async def download_video(url: str = Query(..., description="The video URL")):
         return JSONResponse(content={"status": "error", "message": "URL missing"}, status_code=400)
 
     try:
-        # Professional Headers to bypass blocks
+        # Mazeed advance headers jo YouTube blocks ko bypass karte hain
         ydl_opts = {
             'format': 'best',
             'quiet': True,
             'no_warnings': True,
-            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'referer': 'https://www.google.com/',
+            'http_headers': {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                'Accept-Language': 'en-us,en;q=0.5',
+                'Sec-Fetch-Mode': 'navigate',
+            },
             'nocheckcertificate': True,
         }
         
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            # Extract info safely
+            # Sirf metadata nikalna hai (download nahi karna server par)
             info = ydl.extract_info(url, download=False)
             
-            # Formulating exact response for your HTML
+            # Agar video link mil jaye to return karein
             return {
                 "status": "success",
                 "title": info.get('title', 'Video Download Ready'),
                 "thumbnail": info.get('thumbnail', ''),
-                "download_link": info.get('url', ''),
-                "summary": f"JarryLabs AI Analysis: Content from {info.get('uploader', 'Platform')} is processed and ready for high-speed download."
+                "download_link": info.get('url', ''), # Direct link to MP4
+                "summary": f"JarryLabs AI: This video is ready in high quality. Size might vary based on your connection."
             }
 
     except Exception as e:
-        # Check if it's a specific YouTube block error
-        error_msg = str(e)
-        if "403" in error_msg or "Sign in" in error_msg:
-            return JSONResponse(content={"status": "error", "message": "YouTube is blocking the request. Try a different link or YouTube Short."}, status_code=500)
-        
-        return JSONResponse(content={"status": "error", "message": error_msg}, status_code=500)
+        # Vercel logs mein check karne ke liye print karein
+        print(f"Error details: {str(e)}")
+        return JSONResponse(content={"status": "error", "message": "Server Busy or Link Blocked. Please try a YouTube Short or TikTok link to test."}, status_code=500)
