@@ -3,256 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Video Downloader | Free Online Video Downloader Without Watermark - JarryLabs</title>
-    <meta name="description" content="Download YouTube, TikTok, Facebook, and Instagram videos free without sign up. High-quality video downloader online with 1-line AI summaries.">
-    
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "JarryLabs AI Video Downloader",
-      "operatingSystem": "WINDOWS, Android, iOS, MacOS",
-      "applicationCategory": "MultimediaApplication",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
-    }
-    </script>
-
+    <title>JarryLabs - AI Powered Video Downloader</title>
+    <meta name="description" content="Download high-quality videos with AI-generated summaries using JarryLabs.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
     <style>
-        body { background-color: #ffffff; scroll-behavior: smooth; }
-        .jarry-green { color: #1dbf73; }
-        .bg-jarry-green { background-color: #1dbf73; }
-        .btn-yt { background-color: #FF0000; }
-        .btn-tt { background-color: #000000; }
-        .btn-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-        .btn-fb { background-color: #1877F2; }
-        
-        /* Dots Progress Bar */
-        .dot-pulse { display: none; align-items: center; justify-content: center; gap: 8px; margin: 25px 0; }
-        .dot { width: 14px; height: 14px; background: #1dbf73; border-radius: 50%; animation: pulse 1.5s infinite ease-in-out; }
-        .dot:nth-child(2) { animation-delay: 0.2s; }
-        .dot:nth-child(3) { animation-delay: 0.4s; }
-        @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.6); opacity: 1; } }
-
-        /* Hover Effects */
-        .faq-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .faq-card:hover { border-color: #1dbf73; transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(29, 191, 115, 0.1); }
-        
-        .lang-card { transition: all 0.2s ease; border: 1px solid #e2e8f0; }
-        .lang-card:hover { border-color: #1dbf73; background-color: #f0fff4; color: #1dbf73; transform: scale(1.05); }
+        .loader-dots div { animation-timing-function: cubic-bezier(0, 1, 1, 0); }
+        @keyframes loader-dots1 { 0% { transform: scale(0); } 100% { transform: scale(1); } }
     </style>
 </head>
-<body class="font-sans antialiased text-gray-900">
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
 
-    <nav class="bg-white py-4 shadow-sm border-b sticky top-0 z-50">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <div class="text-3xl font-extrabold tracking-tighter cursor-pointer">
-                JARRY<span class="jarry-green uppercase font-black">LABS</span>
-            </div>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="https://jarrylabs.com" class="text-gray-600 hover:text-green-500 font-bold uppercase text-sm tracking-widest">Main Site</a>
-                <a href="#" class="text-gray-600 hover:text-green-500 font-bold uppercase text-sm tracking-widest">About Us</a>
-            </div>
+    <div class="max-w-2xl w-full bg-white p-8 rounded-3xl shadow-2xl text-center">
+        <h1 class="text-4xl font-black mb-2 italic">Jarry<span class="text-green-500">Labs</span></h1>
+        <p class="text-gray-500 mb-8 font-medium uppercase tracking-widest text-xs">AI Video Downloader Engine</p>
+
+        <div class="flex gap-2 bg-gray-50 p-2 rounded-2xl border-2 border-gray-100">
+            <input type="text" id="videoUrl" placeholder="Paste YouTube/TikTok link here..." class="w-full bg-transparent p-4 outline-none font-medium">
+            <button onclick="fetchVideo()" class="bg-black text-white px-8 rounded-xl font-bold hover:bg-gray-800 transition-all uppercase text-sm tracking-tighter">Fetch</button>
         </div>
-    </nav>
 
-    <section class="w-full bg-slate-50 py-20 border-b text-center">
-        <div class="container mx-auto px-6">
-            <h1 class="text-5xl md:text-7xl font-black mb-6 text-gray-800 uppercase tracking-tighter">AI Video Downloader</h1>
-            <p class="text-xl text-gray-500 mb-12 max-w-3xl mx-auto font-medium">Download high-quality videos instantly. No sign-up, no watermark. Powered by Google Gemini AI.</p>
-
-            <div class="max-w-5xl mx-auto bg-white p-3 rounded-3xl shadow-2xl border-2 flex flex-col md:flex-row gap-2 mb-10">
-                <input type="text" id="videoUrl" placeholder="Paste link from YouTube, TikTok, Facebook, Instagram..." 
-                       class="flex-1 p-5 rounded-2xl focus:outline-none text-lg bg-gray-50 font-medium">
-                <button onclick="getDownload()" class="bg-jarry-green hover:bg-[#19a463] text-white px-14 py-5 rounded-2xl font-black text-2xl transition-all shadow-lg active:scale-95 uppercase">
-                    Fetch Video
-                </button>
+        <div id="loading" class="hidden mt-8">
+            <div class="flex justify-center gap-2">
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-bounce"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-bounce delay-100"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-bounce delay-200"></div>
             </div>
-
-            <div id="dotLoader" class="dot-pulse">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <span class="ml-3 font-black jarry-green uppercase tracking-widest">AI is Analyzing Content...</span>
-            </div>
-
-            <div class="flex flex-wrap justify-center gap-4 mb-8">
-                <button class="btn-yt text-white px-8 py-2 rounded-full text-xs font-black uppercase shadow-lg hover:scale-105 transition"><i class="fab fa-youtube mr-1"></i> YouTube</button>
-                <button class="btn-tt text-white px-8 py-2 rounded-full text-xs font-black uppercase shadow-lg hover:scale-105 transition"><i class="fab fa-tiktok mr-1"></i> TikTok</button>
-                <button class="btn-fb text-white px-8 py-2 rounded-full text-xs font-black uppercase shadow-lg hover:scale-105 transition"><i class="fab fa-facebook mr-1"></i> Facebook</button>
-                <button class="btn-ig text-white px-8 py-2 rounded-full text-xs font-black uppercase shadow-lg hover:scale-105 transition"><i class="fab fa-instagram mr-1"></i> Instagram</button>
-            </div>
+            <p class="text-xs font-bold mt-4 text-gray-400 italic">AI IS ANALYZING THE VIDEO...</p>
         </div>
-    </section>
 
-    <div id="result" class="hidden container mx-auto px-6 -mt-16 mb-24">
-        <div class="max-w-5xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-green-100">
-            <div class="md:flex items-center p-10 text-left gap-12">
-                <img id="thumb" src="" class="w-full md:w-80 rounded-3xl shadow-xl border">
-                <div class="flex-1">
-                    <h3 id="title" class="text-3xl font-black mb-6 uppercase leading-tight">Video Title</h3>
-                    <div class="bg-green-50 p-8 rounded-3xl border-l-[12px] border-jarry-green mb-8 shadow-inner">
-                        <p class="text-sm font-black jarry-green uppercase mb-3 tracking-widest"><i class="fas fa-robot"></i> AI Summary Insight</p>
-                        <p id="aiSummary" class="text-gray-800 leading-relaxed font-bold italic text-xl">Processing summary...</p>
-                    </div>
-                    <a id="downloadBtn" href="#" target="_blank" class="w-full md:w-auto text-center inline-block bg-jarry-green text-white px-16 py-5 rounded-2xl font-black text-2xl hover:bg-[#19a463] transition shadow-2xl uppercase">
-                        <i class="fas fa-download mr-2"></i> Download MP4
-                    </a>
-                </div>
+        <div id="result" class="hidden mt-10 border-t pt-10 text-left">
+            <img id="thumb" src="" class="w-full rounded-2xl shadow-lg mb-6">
+            <h3 id="title" class="text-xl font-black mb-2 leading-tight"></h3>
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+                <p class="text-xs font-bold text-green-700 uppercase mb-1">AI Summary</p>
+                <p id="aiSummary" class="text-gray-700 font-medium italic"></p>
             </div>
+            <a id="dlBtn" href="#" target="_blank" class="block w-full bg-green-500 text-white text-center py-4 rounded-xl font-black uppercase tracking-widest hover:bg-green-600 transition-all">Download Video</a>
         </div>
     </div>
-
-    <section class="container mx-auto px-6 py-20">
-        <div class="grid md:grid-cols-3 gap-10 text-center">
-            <div class="p-10 rounded-[40px] bg-white border-2 faq-card">
-                <h4 class="text-5xl font-black jarry-green mb-3 tracking-tighter">100K+</h4>
-                <p class="font-black text-gray-500 uppercase tracking-widest text-sm">Videos Downloaded</p>
-            </div>
-            <div class="p-10 rounded-[40px] bg-white border-2 faq-card">
-                <h4 class="text-5xl font-black jarry-green mb-3 tracking-tighter">4.9/5</h4>
-                <p class="font-black text-gray-500 uppercase tracking-widest text-sm">Global Rating</p>
-            </div>
-            <div class="p-10 rounded-[40px] bg-white border-2 faq-card">
-                <h4 class="text-5xl font-black jarry-green mb-3 tracking-tighter">FAST</h4>
-                <p class="font-black text-gray-500 uppercase tracking-widest text-sm">Server Speed</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="container mx-auto px-6 py-20 bg-slate-50 rounded-[50px]">
-        <h2 class="text-4xl font-black text-center mb-16 uppercase tracking-tight">Everything You Need To Know</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
-                <h3 class="font-black text-lg mb-3 uppercase jarry-green">Video Downloader FREE?</h3>
-                <p class="text-gray-600 font-medium">JarryLabs is 100% free forever. No subscription fees for high-quality downloads.</p>
-            </div>
-            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
-                <h3 class="font-black text-lg mb-3 uppercase jarry-green">Video Downloader Online?</h3>
-                <p class="text-gray-600 font-medium">Access from any browser. No installation needed for 4K or HD videos.</p>
-            </div>
-            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
-                <h3 class="font-black text-lg mb-3 uppercase jarry-green">No Watermark?</h3>
-                <p class="text-gray-600 font-medium">Get clean, original videos from TikTok and Instagram without watermarks.</p>
-            </div>
-            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
-                <h3 class="font-black text-lg mb-3 uppercase jarry-green">No Sign Up Required?</h3>
-                <p class="text-gray-600 font-medium">Download any video free without sign up or Gmail. We value your privacy.</p>
-            </div>
-            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
-                <h3 class="font-black text-lg mb-3 uppercase jarry-green">AI Summary Feature?</h3>
-                <p class="text-gray-600 font-medium">Unique 1-line AI summary powered by Gemini helps you preview content.</p>
-            </div>
-            <div class="p-8 bg-white border-2 rounded-3xl faq-card">
-                <h3 class="font-black text-lg mb-3 uppercase jarry-green">All Platforms?</h3>
-                <p class="text-gray-600 font-medium">Supports YouTube, Facebook, Twitter, Pinterest, and 1800+ sites.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="container mx-auto px-6 py-24 text-center">
-        <div class="max-w-6xl mx-auto bg-white border-4 border-dashed rounded-[40px] p-8 md:p-16">
-            <h2 class="text-3xl font-black mb-4 uppercase tracking-tight">Global Language Support</h2>
-            <p class="text-gray-500 font-bold mb-10">This tool works in every language. Choose your preferred interface language:</p>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">English</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Urdu</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Hindi</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Spanish</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">French</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Arabic</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">German</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Chinese</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Japanese</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Russian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Portuguese</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Italian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Korean</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Turkish</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Dutch</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Vietnamese</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Polish</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Thai</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Swedish</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Indonesian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Persian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Greek</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Danish</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Finnish</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Norwegian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Malay</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Hebrew</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Czech</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Hungarian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Romanian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Bengali</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Punjabi</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Tamil</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Telugu</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Marathi</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Gujarati</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Ukrainian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Filipino</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Burmese</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Bulgarian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Croatian</button>
-                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Slovak</button>
-            </div>
-        </div>
-    </section>
-
-    <div class="text-center py-10">
-        <a href="https://jarrylabs.com" class="inline-flex items-center px-12 py-5 bg-gray-900 hover:bg-black text-white font-black rounded-full transition shadow-xl uppercase tracking-widest">
-            <i class="fas fa-arrow-left mr-3"></i> Back to JarryLabs Home
-        </a>
-    </div>
-
-    <footer class="bg-white py-16 border-t mt-20">
-        <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
-            <div class="text-3xl font-black tracking-tighter text-gray-300 uppercase">
-                JARRY<span class="uppercase">LABS</span>
-            </div>
-            <div class="flex flex-wrap justify-center gap-10 text-sm font-black text-gray-500 uppercase tracking-widest">
-                <a href="#" class="hover:text-green-500">Privacy Policy</a>
-                <a href="#" class="hover:text-green-500">Terms of Service</a>
-                <a href="#" class="hover:text-green-500">Cookie Policy</a>
-                <a href="#" class="hover:text-green-500">DMCA</a>
-            </div>
-            <p class="text-gray-400 text-xs font-bold uppercase">© 2026 JarryLabs. All Rights Reserved.</p>
-        </div>
-    </footer>
 
     <script>
-        async function getDownload() {
-            const url = document.getElementById('videoUrl').value;
-            const resultDiv = document.getElementById('result');
-            const dotLoader = document.getElementById('dotLoader');
-            
-            if(!url) return alert("Please paste a valid video link!");
+        async function fetchVideo() {
+            const url = document.getElementById('videoUrl').value.trim();
+            if(!url) return alert("Please paste a URL");
 
-            dotLoader.style.display = 'flex';
-            resultDiv.classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('result').classList.add('hidden');
 
             try {
-                // Simulate fetch or call your API
-                const response = await fetch(`/api/download?url=${encodeURIComponent(url)}`);
-                const data = await response.json();
+                const res = await fetch(`/api/download?url=${encodeURIComponent(url)}`);
+                const data = await res.json();
 
-                if(data.status === "success") {
+                if(data.status === 'success') {
                     document.getElementById('title').innerText = data.title;
                     document.getElementById('thumb').src = data.thumbnail;
-                    document.getElementById('downloadBtn').href = data.download_link;
                     document.getElementById('aiSummary').innerText = data.summary;
-                    resultDiv.classList.remove('hidden');
-                    window.scrollTo({ top: resultDiv.offsetTop - 100, behavior: 'smooth' });
+                    document.getElementById('dlBtn').href = data.download_link;
+                    document.getElementById('result').classList.remove('hidden');
                 } else {
                     alert("Error: " + data.message);
                 }
             } catch (err) {
-                alert("Server Error. Please try again later.");
+                alert("Server Error. Please check your Vercel Logs.");
             } finally {
-                dotLoader.style.display = 'none';
+                document.getElementById('loading').classList.add('hidden');
             }
         }
     </script>
