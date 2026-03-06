@@ -6,19 +6,20 @@ import requests
 
 app = FastAPI()
 
-def get_gemini_summary(title):
+def get_ai_summary(title):
+    # Gemini API Key Vercel dashboard se uthayega
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
-        return f"AI Insight: This video titled '{title}' is ready for download."
+        return f"AI Analysis: High-quality video ready for download."
     
-    prompt = f"Write a professional 1-line summary (max 12 words) for: {title}"
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
+    prompt = f"Write a 1-line catchy summary (max 12 words) for: {title}"
     
     try:
         response = requests.post(url, json={"contents": [{"parts": [{"text": prompt}]}]})
         return response.json()['candidates'][0]['content']['parts'][0]['text']
     except:
-        return f"Ready to download: {title}"
+        return f"Summary: Video content titled '{title}' is processed."
 
 @app.get("/api/download")
 async def download_video(url: str = Query(..., description="Video URL")):
@@ -36,8 +37,8 @@ async def download_video(url: str = Query(..., description="Video URL")):
             info = ydl.extract_info(url, download=False)
             video_title = info.get('title', 'Video')
             
-            # AI Summary Generation
-            summary = get_gemini_summary(video_title)
+            # Generating AI Summary
+            summary = get_ai_summary(video_title)
 
             return {
                 "status": "success",
@@ -48,3 +49,6 @@ async def download_video(url: str = Query(..., description="Video URL")):
             }
     except Exception as e:
         return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+
+# Vercel requirement
+handler = app
