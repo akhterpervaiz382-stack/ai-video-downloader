@@ -1,47 +1,46 @@
-from http.server import BaseHTTPRequestHandler
-import json
-import urllib.parse
+from fastapi import FastAPI, Query
+from fastapi.responses import JSONResponse
 import yt_dlp
+import requests
 
-class handler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        url_parts = urllib.parse.urlparse(self.path)
-        params = urllib.parse.parse_qs(url_parts.query)
-        video_url = params.get('url', [None])[0]
+app = FastAPI()
 
-        if not video_url:
-            self.send_error_response("No URL provided")
-            return
+@app.get("/api/download")
+async def download_video(url: str = Query(..., description="The video URL to download")):
+    if not url:
+        return JSONResponse(content={"status": "error", "message": "No URL provided"}, status_code=400)
 
-        try:
-            ydl_opts = {
-                'format': 'best',
-                'quiet': True,
-                'no_warnings': True,
-            }
+    try:
+        ydl_opts = {
+            'format': 'best',
+            'quiet': True,
+            'no_warnings': True,
+        }
+        
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+            info = ydl.extract_info(url, download=False)
             
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(video_url, download=False)
-                
-                # Yeh data hamare HTML ko wapas jayega
-                response_data = {
-                    "status": "success",
-                    "title": info.get('title', 'No Title'),
-                    "thumbnail": info.get('thumbnail', ''),
-                    "download_link": info.get('url', ''),
-                    "summary": f"This video is about {info.get('title')}. It has {info.get('view_count', 0)} views and was uploaded by {info.get('uploader')}."
-                }
+            # Metadata extract karna
+            video_title = info.get('title', 'No Title')
+            thumbnail = info.get('thumbnail', '')
+            download_url = info.get('url', '')
+            uploader = info.get('uploader', 'Unknown')
 
-            self.send_response(200)
-            self.send_header('Content-type', 'application/json')
-            self.end_headers()
-            self.wfile.write(json.dumps(response_data).encode())
+            # Temporary AI Summary (Jab tak Gemini API Key nahi daltay)
+            ai_summary = f"JarryLabs AI Analysis: This video by '{uploader}' titled '{video_title}' is ready for high-quality download."
 
-        except Exception as e:
-            self.send_error_response(str(e))
+            return {
+                "status": "success",
+                "title": video_title,
+                "thumbnail": thumbnail,
+                "download_link": download_url,
+                "summary": ai_summary
+            }
 
-    def send_error_response(self, message):
-        self.send_response(500)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-        self.wfile.write(json.dumps({"status": "error", "message": message}).encode())
+    except Exception as e:
+        return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+
+# Vercel ko FastAPI app chalane ke liye ye zaroori hai
+@app.get("/")
+async def root():
+    return {"message": "JarryLabs API is Running"}
