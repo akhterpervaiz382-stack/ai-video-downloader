@@ -39,7 +39,8 @@
         .faq-card { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .faq-card:hover { border-color: #1dbf73; transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(29, 191, 115, 0.1); }
         
-        .lang-card:hover { border-color: #1dbf73; background-color: #f0fff4; }
+        .lang-card { transition: all 0.2s ease; border: 1px solid #e2e8f0; }
+        .lang-card:hover { border-color: #1dbf73; background-color: #f0fff4; color: #1dbf73; transform: scale(1.05); }
     </style>
 </head>
 <body class="font-sans antialiased text-gray-900">
@@ -56,8 +57,8 @@
         </div>
     </nav>
 
-    <section class="w-full bg-slate-50 py-20 border-b">
-        <div class="container mx-auto px-6 text-center">
+    <section class="w-full bg-slate-50 py-20 border-b text-center">
+        <div class="container mx-auto px-6">
             <h1 class="text-5xl md:text-7xl font-black mb-6 text-gray-800 uppercase tracking-tighter">AI Video Downloader</h1>
             <p class="text-xl text-gray-500 mb-12 max-w-3xl mx-auto font-medium">Download high-quality videos instantly. No sign-up, no watermark. Powered by Google Gemini AI.</p>
 
@@ -125,41 +126,78 @@
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
             <div class="p-8 bg-white border-2 rounded-3xl faq-card">
                 <h3 class="font-black text-lg mb-3 uppercase jarry-green">Video Downloader FREE?</h3>
-                <p class="text-gray-600 font-medium">JarryLabs is 100% free forever. We believe in providing premium AI tools without any subscription fees.</p>
+                <p class="text-gray-600 font-medium">JarryLabs is 100% free forever. No subscription fees for high-quality downloads.</p>
             </div>
             <div class="p-8 bg-white border-2 rounded-3xl faq-card">
                 <h3 class="font-black text-lg mb-3 uppercase jarry-green">Video Downloader Online?</h3>
-                <p class="text-gray-600 font-medium">Access our tool from any browser. No installation needed for downloading 4K or HD videos online.</p>
+                <p class="text-gray-600 font-medium">Access from any browser. No installation needed for 4K or HD videos.</p>
             </div>
             <div class="p-8 bg-white border-2 rounded-3xl faq-card">
                 <h3 class="font-black text-lg mb-3 uppercase jarry-green">No Watermark?</h3>
-                <p class="text-gray-600 font-medium">Our TikTok and Instagram downloader ensures you get the clean, original video without any watermarks.</p>
+                <p class="text-gray-600 font-medium">Get clean, original videos from TikTok and Instagram without watermarks.</p>
             </div>
             <div class="p-8 bg-white border-2 rounded-3xl faq-card">
                 <h3 class="font-black text-lg mb-3 uppercase jarry-green">No Sign Up Required?</h3>
-                <p class="text-gray-600 font-medium">Download any video free without sign up or Gmail. We respect your privacy and save your time.</p>
+                <p class="text-gray-600 font-medium">Download any video free without sign up or Gmail. We value your privacy.</p>
             </div>
             <div class="p-8 bg-white border-2 rounded-3xl faq-card">
                 <h3 class="font-black text-lg mb-3 uppercase jarry-green">AI Summary Feature?</h3>
-                <p class="text-gray-600 font-medium">Unique 1-line AI summary powered by Gemini so you know the video content before downloading.</p>
+                <p class="text-gray-600 font-medium">Unique 1-line AI summary powered by Gemini helps you preview content.</p>
             </div>
             <div class="p-8 bg-white border-2 rounded-3xl faq-card">
                 <h3 class="font-black text-lg mb-3 uppercase jarry-green">All Platforms?</h3>
-                <p class="text-gray-600 font-medium">Supports YouTube, Facebook, Twitter, Pinterest, and 1800+ other major streaming sites.</p>
+                <p class="text-gray-600 font-medium">Supports YouTube, Facebook, Twitter, Pinterest, and 1800+ sites.</p>
             </div>
         </div>
     </section>
 
     <section class="container mx-auto px-6 py-24 text-center">
-        <div class="max-w-4xl mx-auto bg-white border-4 border-dashed rounded-[40px] p-12">
+        <div class="max-w-6xl mx-auto bg-white border-4 border-dashed rounded-[40px] p-8 md:p-16">
             <h2 class="text-3xl font-black mb-4 uppercase tracking-tight">Global Language Support</h2>
-            <p class="text-gray-500 font-bold mb-8">This tool works in every language. Choose your preferred interface language:</p>
-            <div class="flex flex-wrap justify-center gap-4">
-                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">English</button>
-                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">Urdu / Hindi</button>
-                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">Spanish</button>
-                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">Arabic</button>
-                <button class="lang-card border-2 px-6 py-3 rounded-2xl font-bold transition">French</button>
+            <p class="text-gray-500 font-bold mb-10">This tool works in every language. Choose your preferred interface language:</p>
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">English</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Urdu</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Hindi</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Spanish</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">French</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Arabic</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">German</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Chinese</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Japanese</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Russian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Portuguese</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Italian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Korean</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Turkish</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Dutch</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Vietnamese</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Polish</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Thai</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Swedish</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Indonesian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Persian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Greek</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Danish</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Finnish</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Norwegian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Malay</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Hebrew</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Czech</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Hungarian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Romanian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Bengali</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Punjabi</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Tamil</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Telugu</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Marathi</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Gujarati</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Ukrainian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Filipino</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Burmese</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Bulgarian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Croatian</button>
+                <button class="lang-card px-4 py-2 rounded-xl text-sm font-bold uppercase">Slovak</button>
             </div>
         </div>
     </section>
@@ -172,7 +210,7 @@
 
     <footer class="bg-white py-16 border-t mt-20">
         <div class="container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
-            <div class="text-3xl font-black tracking-tighter text-gray-300">
+            <div class="text-3xl font-black tracking-tighter text-gray-300 uppercase">
                 JARRY<span class="uppercase">LABS</span>
             </div>
             <div class="flex flex-wrap justify-center gap-10 text-sm font-black text-gray-500 uppercase tracking-widest">
@@ -197,6 +235,7 @@
             resultDiv.classList.add('hidden');
 
             try {
+                // Simulate fetch or call your API
                 const response = await fetch(`/api/download?url=${encodeURIComponent(url)}`);
                 const data = await response.json();
 
