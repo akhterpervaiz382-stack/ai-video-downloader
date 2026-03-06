@@ -6,84 +6,128 @@
     <title>AI Video Downloader & Summarizer | Free Online Tool 2026</title>
     <meta name="description" content="Download YouTube, TikTok, and Instagram videos for free with a 1-line AI summary. Fast, safe, and no ads.">
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/dist/css/all.min.css">
+    <style>
+        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
+        .hero-gradient { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        #loading { display: none; }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-gray-100 font-sans text-gray-900">
 
-    <nav class="bg-white shadow-sm p-4 text-center">
-        <h1 class="text-2xl font-bold text-blue-600">JarryLabs AI Downloader</h1>
+    <nav class="glass sticky top-0 z-50 p-4 border-b border-gray-200">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-black text-indigo-600 tracking-tight">Jarry<span class="text-purple-600">Labs</span> AI</div>
+            <div class="hidden md:flex space-x-6 font-medium text-gray-600">
+                <a href="#" class="hover:text-indigo-600 transition">YouTube</a>
+                <a href="#" class="hover:text-indigo-600 transition">TikTok</a>
+                <a href="#" class="hover:text-indigo-600 transition">Instagram</a>
+            </div>
+        </div>
     </nav>
 
-    <section class="max-w-4xl mx-auto mt-12 p-6 bg-white rounded-xl shadow-md">
-        <h2 class="text-3xl font-extrabold text-center text-gray-800 mb-4">AI Video Downloader & Summarizer</h2>
-        <p class="text-center text-gray-600 mb-8">Paste your video link below to download and get a 1-line AI summary instantly.</p>
-
-        <div class="flex flex-col md:flex-row gap-2">
-            <input type="text" id="videoUrl" placeholder="Paste YouTube, TikTok, or Instagram link here..." 
-                   class="flex-1 p-4 border-2 border-blue-100 rounded-lg focus:outline-none focus:border-blue-500">
-            <button onclick="getDownload()" class="bg-blue-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-blue-700 transition">
-                Download Now
-            </button>
+    <header class="hero-gradient py-20 px-4 text-white text-center">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">AI Video Downloader & <br><span class="text-indigo-200 underline">Summarizer</span></h1>
+            <p class="text-lg md:text-xl mb-10 text-indigo-100 font-light">The fastest way to download videos and get instant AI summaries in 2026.</p>
+            
+            <div class="glass p-2 md:p-4 rounded-2xl shadow-2xl max-w-3xl mx-auto flex flex-col md:flex-row gap-2">
+                <input type="text" id="videoUrl" placeholder="Paste link here (YouTube, TikTok, Insta...)" 
+                       class="flex-1 p-4 rounded-xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-400 border-none">
+                <button onclick="getDownload()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-10 py-4 rounded-xl font-bold transition-all transform hover:scale-105">
+                    Start Fetching
+                </button>
+            </div>
+            
+            <div id="loading" class="mt-6 flex items-center justify-center space-x-2">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-white"></div>
+                <span>AI is analyzing the video...</span>
+            </div>
         </div>
+    </header>
 
-        <div id="result" class="mt-10 hidden border-t pt-6">
-            <div id="videoDetails" class="flex flex-col md:flex-row gap-6">
-                <img id="thumb" src="" class="w-full md:w-48 rounded-lg shadow">
-                <div>
-                    <h3 id="title" class="text-xl font-bold text-gray-800">Video Title</h3>
-                    <p id="aiSummary" class="mt-2 text-green-700 font-medium bg-green-50 p-3 rounded border border-green-100">AI Summary loading...</p>
-                    <a id="downloadBtn" href="#" target="_blank" class="inline-block mt-4 bg-green-600 text-white px-6 py-2 rounded font-bold hover:bg-green-700">
-                        💾 Download Video
+    <main id="result" class="max-w-4xl mx-auto -mt-10 px-4 hidden">
+        <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+            <div class="md:flex">
+                <div class="md:w-1/3">
+                    <img id="thumb" src="" class="h-full w-full object-cover">
+                </div>
+                <div class="p-8 md:w-2/3">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <span class="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-1 rounded-full uppercase">Ready to Download</span>
+                    </div>
+                    <h2 id="title" class="text-2xl font-bold text-gray-800 leading-snug">Video Title</h2>
+                    <div class="mt-4 bg-purple-50 border-l-4 border-purple-500 p-4">
+                        <p class="text-sm font-semibold text-purple-800 flex items-center">
+                            <i class="fa-solid fa-robot mr-2"></i> AI 1-Line Summary:
+                        </p>
+                        <p id="aiSummary" class="text-gray-700 mt-1 italic text-base">Generating summary...</p>
+                    </div>
+                    <a id="downloadBtn" href="#" target="_blank" class="mt-6 w-full md:w-auto inline-flex items-center justify-center px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition shadow-lg shadow-green-200">
+                        <i class="fa-solid fa-download mr-2"></i> Download Video (MP4)
                     </a>
                 </div>
             </div>
         </div>
+    </main>
+
+    <section class="max-w-6xl mx-auto py-20 px-6 grid md:grid-cols-3 gap-12">
+        <div class="text-center">
+            <div class="bg-indigo-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-indigo-600 text-2xl">
+                <i class="fa-solid fa-bolt"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Ultra Fast</h3>
+            <p class="text-gray-500 text-sm">Download high-quality videos in seconds with our optimized Vercel edge servers.</p>
+        </div>
+        <div class="text-center">
+            <div class="bg-purple-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-purple-600 text-2xl">
+                <i class="fa-solid fa-brain"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">AI Summaries</h3>
+            <p class="text-gray-500 text-sm">Don't have time to watch? Our AI provides a 1-line summary of every video.</p>
+        </div>
+        <div class="text-center">
+            <div class="bg-green-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-green-600 text-2xl">
+                <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Safe & Secure</h3>
+            <p class="text-gray-500 text-sm">No popups, no ads, no malware. Just a clean experience for downloading content.</p>
+        </div>
     </section>
 
-    <article class="max-w-4xl mx-auto mt-16 p-6 text-gray-700">
-        <h2 class="text-2xl font-bold mb-4">How to Download YouTube Videos with AI Summary?</h2>
-        <p class="mb-4">Our tool is the fastest <strong>free online video downloader</strong> that uses AI to summarize content for you. Whether you need a <strong>TikTok video downloader without watermark</strong> or a high-quality <strong>Instagram Reels downloader</strong>, we have you covered.</p>
-        
-        <div class="grid md:grid-cols-2 gap-8 mt-8">
-            <div>
-                <h3 class="font-bold text-lg">Key Features:</h3>
-                <ul class="list-disc ml-5 mt-2 space-y-2">
-                    <li>1-Line AI Video Summarizer</li>
-                    <li>Supports YouTube, TikTok, Instagram, and Pinterest</li>
-                    <li>No Annoying Ads or Popups</li>
-                    <li>High-Quality MP4 Downloads</li>
-                </ul>
-            </div>
-            <div>
-                <h3 class="font-bold text-lg">FAQs:</h3>
-                <p class="mt-2"><strong>Is it safe?</strong> Yes, our AI-powered tool is 100% secure.</p>
-                <p class="mt-2"><strong>Does it work on Mobile?</strong> Absolutely! It's optimized for all devices.</p>
-            </div>
-        </div>
-    </article>
+    <footer class="bg-white border-t border-gray-200 py-10 text-center text-gray-500 text-sm">
+        <p>&copy; 2026 JarryLabs AI Video Tool. All rights reserved.</p>
+    </footer>
 
     <script>
         async function getDownload() {
             const url = document.getElementById('videoUrl').value;
             const resultDiv = document.getElementById('result');
-            if(!url) return alert("Please paste a link!");
+            const loader = document.getElementById('loading');
+            
+            if(!url) return alert("Aray bhai! Pehle link to paste karein.");
 
-            resultDiv.classList.remove('hidden');
-            document.getElementById('aiSummary').innerText = "AI is analyzing the video...";
+            loader.style.display = 'flex';
+            resultDiv.classList.add('hidden');
 
             try {
                 const response = await fetch(`/api/download?url=${encodeURIComponent(url)}`);
                 const data = await response.json();
 
                 if(data.status === "success") {
-                    document.getElementById('title').innerText = data.title;
-                    document.getElementById('thumb').src = data.thumbnail;
-                    document.getElementById('downloadBtn').href = data.download_link;
-                    document.getElementById('aiSummary').innerText = "AI Summary: " + data.summary;
+                    document.getElementById('title').innerText = data.title || "Video Found";
+                    document.getElementById('thumb').src = data.thumbnail || "https://via.placeholder.com/400";
+                    document.getElementById('downloadBtn').href = data.download_link || "#";
+                    document.getElementById('aiSummary').innerText = data.summary || "AI is still processing...";
+                    
+                    resultDiv.classList.remove('hidden');
                 } else {
-                    alert("Error: " + data.message);
+                    alert("Opps! " + (data.message || "Link invalid hai."));
                 }
             } catch (err) {
-                alert("Something went wrong!");
+                alert("Server busy hai, please try again!");
+            } finally {
+                loader.style.display = 'none';
             }
         }
     </script>
