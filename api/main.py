@@ -1,32 +1,22 @@
-from fastapi import FastAPI, Query
-from fastapi.responses import JSONResponse
-import yt_dlp
-import os
-import requests
-
-app = FastAPI()
-
-def get_ai_summary(title):
-    api_key = os.getenv("GEMINI_API_KEY")
-    if not api_key:
-        return f"AI Analysis: High-quality video ready for download."
-    
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
-    prompt = f"Write a 1-line catchy summary (max 12 words) for: {title}"
-    
-    try:
-        response = requests.post(url, json={"contents": [{"parts": [{"text": prompt}]}]})
-        return response.json()['candidates'][0]['content']['parts'][0]['text']
-    except:
-        return f"Summary: Video content titled '{title}' is processed."
+import tempfile
 
 @app.get("/api/download")
 async def download_video(url: str = Query(..., description="Video URL")):
     try:
+        # Cookies ko temporary file mein save karna
+        cookie_content = os.getenv("YT_COOKIES")
+        cookie_path = None
+        
+        if cookie_content:
+            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as tmp:
+                tmp.write(cookie_content)
+                cookie_path = tmp.name
+
         ydl_opts = {
             'format': 'best',
             'quiet': True,
             'no_warnings': True,
+            'cookiefile': cookie_path, # Cookies yahan use ho rahi hain
             'http_headers': {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
             }
@@ -36,6 +26,10 @@ async def download_video(url: str = Query(..., description="Video URL")):
             info = ydl.extract_info(url, download=False)
             video_title = info.get('title', 'Video')
             summary = get_ai_summary(video_title)
+
+            # Cleanup temporary file
+            if cookie_path:
+                os.remove(cookie_path)
 
             return {
                 "status": "success",
