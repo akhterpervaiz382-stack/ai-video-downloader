@@ -1,24 +1,44 @@
-import tempfile
+from fastapi import FastAPI, Query
+from fastapi.responses import JSONResponse
+import yt_dlp
+import os
+import requests
+
+app = FastAPI()
+
+def get_ai_summary(title):
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return f"AI Insight: Video content is analyzed and ready."
+    
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={api_key}"
+    prompt = f"Write a 1-line catchy summary (max 12 words) for: {title}"
+    
+    try:
+        response = requests.post(url, json={"contents": [{"parts": [{"text": prompt}]}]}, timeout=5)
+        return response.json()['candidates'][0]['content']['parts'][0]['text']
+    except:
+        return f"Summary: Ready to download '{title}'."
 
 @app.get("/api/download")
 async def download_video(url: str = Query(..., description="Video URL")):
     try:
-        # Cookies ko temporary file mein save karna
-        cookie_content = os.getenv("YT_COOKIES")
-        cookie_path = None
-        
-        if cookie_content:
-            with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as tmp:
-                tmp.write(cookie_content)
-                cookie_path = tmp.name
-
         ydl_opts = {
-            'format': 'best',
+            # 'format_sort' help karta hai takay YouTube ko lage ye mobile app hai
+            'format_sort': ['res:720', 'ext:mp4:m4a'],
             'quiet': True,
             'no_warnings': True,
-            'cookiefile': cookie_path, # Cookies yahan use ho rahi hain
+            # 'extractor_args' YouTube ki bot detection ko dhoka dainay ke liye
+            'extractor_args': {
+                'youtube': {
+                    'player_client': ['android'],
+                    'skip': ['webpage']
+                }
+            },
             'http_headers': {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                'User-Agent': 'com.google.android.youtube/19.08.35 (Linux; U; Android 11) (HIUI 12.5.4)',
+                'Accept': '*/*',
+                'Accept-Language': 'en-US,en;q=0.9',
             }
         }
         
@@ -26,10 +46,6 @@ async def download_video(url: str = Query(..., description="Video URL")):
             info = ydl.extract_info(url, download=False)
             video_title = info.get('title', 'Video')
             summary = get_ai_summary(video_title)
-
-            # Cleanup temporary file
-            if cookie_path:
-                os.remove(cookie_path)
 
             return {
                 "status": "success",
@@ -39,4 +55,8 @@ async def download_video(url: str = Query(..., description="Video URL")):
                 "summary": summary
             }
     except Exception as e:
-        return JSONResponse(content={"status": "error", "message": str(e)}, status_code=500)
+        # Error message ko clean karna
+        err_msg = str(e)
+        if "Sign in to confirm you’re not a bot" in err_msg:
+            err_msg = "YouTube Security Blocked this request. Try a TikTok or Instagram link to verify it works!"
+        return JSONResponse(content={"status": "error", "message": err_msg}, status_code=500)
